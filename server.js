@@ -22,6 +22,23 @@ app.get('/', (req, res) => {
   });
 });
 
+app.post('/checkUserExistence', (req, res) => {
+  const { usuario } = req.body;
+
+  const sql = "SELECT * FROM User WHERE usuario = ?";
+  db.query(sql, [usuario], (err, data) => {
+    if (err) {
+      return res.json(err);
+    }
+    if (data.length > 0) {
+      return res.json({ exists: true }); // El usuario existe
+    } else {
+      return res.json({ exists: false }); // El usuario no existe
+    }
+  });
+});
+
+
 app.post('/login', (req, res) => {
   const { usuario, password } = req.body;
 
